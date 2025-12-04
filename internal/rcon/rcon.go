@@ -8,33 +8,33 @@ import (
 )
 
 type RCONClient struct {
-	Rcon   *rcon.Conn
-	Config *config.RconConfig
+	rcon   *rcon.Conn
+	config *config.RconConfig
 }
 
 func SetupRCONClient(config *config.RconConfig) {
 	Client = &RCONClient{
-		Config: config,
+		config: config,
 	}
 }
 
 var Client *RCONClient
 
 func (rc *RCONClient) Connect() error {
-	log.Printf("Connecting to %s\n", rc.Config.Address)
-	conn, err := rcon.Dial(rc.Config.Address, rc.Config.Password)
-	rc.Rcon = conn
+	log.Printf("Connecting to %s\n", rc.config.Address)
+	conn, err := rcon.Dial(rc.config.Address, rc.config.Password)
+	rc.rcon = conn
 	return err
 }
 
 func (rc *RCONClient) Execute(command string) (string, error) {
-	response, err := rc.Rcon.Execute(command)
+	response, err := rc.rcon.Execute(command)
 	log.Info().Str("command", command).Str("response", response).Msg("Executed RCON command")
 	return response, err
 }
 
 func (rc *RCONClient) Close() error {
-	err := rc.Rcon.Close()
+	err := rc.rcon.Close()
 	log.Info().Msg("Closing RCON connection")
 	return err
 }
