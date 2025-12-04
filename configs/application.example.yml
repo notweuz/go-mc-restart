@@ -1,6 +1,6 @@
 go_mc_restart:
   rcon:
-    address: "localhost:25567"
+    address: "localhost:25575"
     password: "password"
   scheduler:
     cron: "0 0 * * *"
