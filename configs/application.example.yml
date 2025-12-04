@@ -6,7 +6,7 @@ go_mc_scheduler:
     timezone: "Europe/Moscow"
 
     jobs:
-      - name: "Auto Restart"
+      - name: "Auto Restart" # this requires you to set up Minecraft server in docker or somewhere else with auto-restart on exit
         cron: "0 0 * * *"
         steps:
           - execute: "say §cServer will restart in 10 minutes!"

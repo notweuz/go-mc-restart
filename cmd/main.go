@@ -2,7 +2,6 @@ package main
 
 import (
 	"gorestart-minecraft/internal/config"
-	"gorestart-minecraft/internal/rcon"
 	"gorestart-minecraft/internal/scheduler"
 	"os"
 
@@ -11,7 +10,7 @@ import (
 	"github.com/rs/zerolog/pkgerrors"
 )
 
-var Version = "2025.12.1"
+var Version = "2025.12.2"
 
 func main() {
 	setupLogger()
@@ -21,8 +20,6 @@ func main() {
 	if err != nil {
 		log.Fatal().Err(err).Msg("Failed to load config")
 	}
-
-	rcon.SetupRCONClient(&config.GetConfig().Rcon)
 
 	sched := scheduler.NewScheduler(&config.GetConfig().Scheduler)
 	if err := sched.Start(); err != nil {

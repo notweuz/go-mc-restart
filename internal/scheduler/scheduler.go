@@ -50,20 +50,22 @@ func (s *Scheduler) runJob(job config.Job) func() {
 	return func() {
 		log.Info().Str("job", job.Name).Msg("Scheduled job triggered")
 
-		log.Info().Msg("Connecting to server using RCON")
-		if err := rcon.Client.Connect(); err != nil {
-			log.Error().Err(err).Msg("Failed to connect to RCON")
+		log.Info().Str("job", job.Name).Msg("Connecting to server using RCON")
+		conn, err := rcon.Connect()
+		if err != nil {
+			log.Error().Str("job", job.Name).Err(err).Msg("Failed to connect to RCON")
 			return
 		}
 		defer func() {
-			if err := rcon.Client.Close(); err != nil {
+			log.Info().Str("job", job.Name).Msg("Scheduled job completed")
+			if err := conn.Close(); err != nil {
 				log.Error().Err(err).Str("job", job.Name).Msg("Failed to close RCON connection")
 			}
 		}()
 
 		for _, w := range job.Steps {
 			if w.Execute != nil {
-				for _, err := rcon.Client.Execute(*w.Execute); err != nil; {
+				for _, err := conn.Execute(*w.Execute); err != nil; {
 					log.Error().Err(err).Msg("Failed to execute command")
 				}
 			}
@@ -73,11 +75,9 @@ func (s *Scheduler) runJob(job config.Job) func() {
 					log.Error().Err(err).Msg("Failed to parse wait duration")
 					continue
 				}
-				log.Info().Str("duration", duration.String()).Msg("Waiting")
+				log.Info().Str("job", job.Name).Str("duration", duration.String()).Msg("Waiting")
 				time.Sleep(duration)
 			}
 		}
-
-		log.Info().Str("job", job.Name).Msg("Scheduled job completed")
 	}
 }
