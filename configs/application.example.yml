@@ -1,0 +1,7 @@
+go_mc_restart:
+  rcon:
+    address: "rcon://localhost:25567"
+    password: "password"
+  scheduler:
+    cron: "0 0 * * *"
+    timezone: "UTC+4"
