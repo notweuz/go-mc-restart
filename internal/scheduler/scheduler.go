@@ -53,10 +53,10 @@ func (s *Scheduler) restartServer() {
 	}
 
 	for _, w := range RestartWarnings {
-		time.Sleep(w.delay)
 		for _, err := rcon.Client.Execute("say " + w.message); err != nil; {
-			log.Error().Err(err).Str("message", w.message).Msg("Failed to restart server")
+			log.Error().Err(err).Str("message", w.message).Msg("Failed to send restart warning")
 		}
+		time.Sleep(w.delay)
 	}
 
 	log.Info().Msg("Saving server")
