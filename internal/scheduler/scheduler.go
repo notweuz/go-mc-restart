@@ -46,6 +46,7 @@ func (s *Scheduler) Stop() {
 func (s *Scheduler) restartServer() {
 	log.Info().Msg("Scheduled task triggered: restarting server")
 
+	log.Info().Msg("Connecting to server using RCON")
 	if err := rcon.Client.Connect(); err != nil {
 		log.Error().Err(err).Msg("Failed to connect to RCON")
 		return
