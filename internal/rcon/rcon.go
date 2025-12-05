@@ -11,10 +11,14 @@ type Connection struct {
 	connection *rcon.Conn
 }
 
+func NewConnection(connection *rcon.Conn) *Connection {
+	return &Connection{connection: connection}
+}
+
 func Connect() (*Connection, error) {
 	log.Printf("Connecting to %s\n", config.GetConfig().Rcon.Address)
 	conn, err := rcon.Dial(config.GetConfig().Rcon.Address, config.GetConfig().Rcon.Password)
-	return &Connection{connection: conn}, err
+	return NewConnection(conn), err
 }
 
 func (c *Connection) Execute(command string) (string, error) {
