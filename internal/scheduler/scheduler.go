@@ -37,7 +37,7 @@ func (s *Scheduler) Start() error {
 	}
 
 	s.cron.Start()
-	log.Info().Msg("Scheduler started with all jobs")
+	log.Info().Msg("Imported all scheduled jobs and started scheduler")
 	return nil
 }
 
