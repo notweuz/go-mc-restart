@@ -16,7 +16,7 @@ func NewConnection(connection *rcon.Conn) *Connection {
 }
 
 func Connect() (*Connection, error) {
-	log.Printf("Connecting to %s\n", config.GetConfig().Rcon.Address)
+	log.Info().Str("address", config.GetConfig().Rcon.Address).Msg("Connecting to RCON server")
 	conn, err := rcon.Dial(config.GetConfig().Rcon.Address, config.GetConfig().Rcon.Password)
 	return NewConnection(conn), err
 }
