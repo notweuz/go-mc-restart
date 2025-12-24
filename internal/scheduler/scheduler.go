@@ -65,8 +65,9 @@ func (s *Scheduler) runJob(job config.Job) func() {
 
 		for _, w := range job.Steps {
 			if w.Execute != nil {
-				for _, err := conn.Execute(*w.Execute); err != nil; {
-					log.Error().Err(err).Msg("Failed to execute command")
+				_, err := conn.Execute(*w.Execute)
+				if err != nil {
+					log.Error().Err(err).Str("command", *w.Execute).Msg("Failed to execute command, skipping to next step")
 				}
 			}
 			if w.Wait != nil {
